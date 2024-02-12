@@ -1,14 +1,9 @@
+from __future__ import annotations
+
 import typing
 import abc
 
 import pint
-
-registry = {}
-
-def journal(cls: BaseJournal) -> BaseJournal:
-    registry[cls.name] = cls
-    return cls
-
 
 
 
@@ -34,7 +29,7 @@ class BaseJournal(abc.ABC):
             autoconvert_offset_to_baseunit=True,
         )
 
-        self._rc_params = {}
+        self._rc_params: dict[str, typing.Any] = {}
 
     @abc.abstractmethod
     def add_custom_units(self) -> None:
@@ -49,7 +44,7 @@ class BaseJournal(abc.ABC):
     def name(self) -> str:
         return self.name
 
-    def get_size(self, units="inches") -> tuple[float, float]:
+    def get_size(self, units: str = "inches") -> tuple[float, float]:
 
         width = self._ureg.Quantity(value=self._width_raw)
 
@@ -76,6 +71,16 @@ class BaseJournal(abc.ABC):
 
         return self._rc_params | figure_size_entry
 
+
+T = typing.TypeVar("T", bound=BaseJournal)
+
+registry : dict[str, typing.Type[T]] = {}
+
+def journal(cls: typing.Type[T]) -> typing.Type[T]:
+    registry[cls.name] = cls
+    return cls
+
+reveal_type(registry)
 
 @journal
 class ProcRoyalSocB(BaseJournal):
