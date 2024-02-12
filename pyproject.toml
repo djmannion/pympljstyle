@@ -1,6 +1,6 @@
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "pympljstyle"
@@ -8,25 +8,20 @@ dynamic = ["version"]
 description = 'Apply journal styles and requirements to `matplotlib` figures'
 readme = "README.md"
 requires-python = ">=3.10"
-license = "MIT"
 keywords = []
 authors = [
   { name = "Damien Mannion", email = "damien@djmannion.net" },
 ]
-classifiers = [
-  "Development Status :: 4 - Beta",
-  "Programming Language :: Python",
-  "Programming Language :: Python :: 3.8",
-  "Programming Language :: Python :: 3.9",
-  "Programming Language :: Python :: 3.10",
-  "Programming Language :: Python :: 3.11",
-  "Programming Language :: Python :: 3.12",
-  "Programming Language :: Python :: Implementation :: CPython",
-  "Programming Language :: Python :: Implementation :: PyPy",
-]
 dependencies = [
   "matplotlib",
   "pint",
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
 ]
 
 [project.optional-dependencies]
@@ -34,25 +29,71 @@ dev = [
   "pytest",
   "black",
   "mypy",
+  "ruff",
 ]
 interactive = [
   "ipython",
   "pickleshare",
 ]
 
+
+
 [project.urls]
 Documentation = "https://github.com/unknown/pympljstyle#readme"
 Issues = "https://github.com/unknown/pympljstyle/issues"
 Source = "https://github.com/unknown/pympljstyle"
 
-[tool.hatch.version]
-path = "src/pympljstyle/__about__.py"
+[tool.setuptools.dynamic]
+version = {attr = "pympljstyle.__version__"}
 
-[[tool.hatch.envs.all.matrix]]
-python = ["3.10", "3.11", "3.12"]
+[tool.black]
+line-length = 88
+preview = false
+skip-source-first-line = false
+skip-string-normalization = false
+skip-magic-trailing-comma = false
 
-[tool.hatch.envs.interactive]
-features = [
-  "dev",
-  "interactive",
+[tool.ruff]
+exclude = []
+lint.select = [
+	"E",  # error
+	"F",  # pyflakes
+	"UP",  # pyupgrade
+	"N",  # pep8-naming
+	"ANN",  # flake8-annotations
+	"A",  # flake8-builtins
+	"PTH",  # flake8-usepathlib
+	"B",  # flake8-bugbear
+	"Q",  # flake8-quotes
+	"ARG",  # flake8-unused-arguments
+	"NPY",  # numpy
+	"PERF",  # perflint
+	"RUF",  # ruff
 ]
+target-version = "py310"
+lint.ignore = [
+	"ANN101",  # typing self
+]
+
+[tool.mypy]
+# corresponding to --strict
+warn_unused_configs = true
+disallow_any_generics = true
+disallow_subclassing_any = true
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_return_any = true
+no_implicit_reexport = true
+strict_equality = true
+extra_checks = true
+
+[[tool.mypy.overrides]]
+module = [
+	"pint",
+]
+ignore_missing_imports = true
