@@ -5,7 +5,7 @@ import pint
 
 registry = {}
 
-def journal(cls: object) -> object:
+def journal(cls: BaseJournal) -> BaseJournal:
     registry[cls.name] = cls
     return cls
 
