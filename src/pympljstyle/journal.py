@@ -1,10 +1,7 @@
-from __future__ import annotations
-
 import typing
 import abc
 
 import pint
-
 
 
 class BaseJournal(abc.ABC):
@@ -60,7 +57,7 @@ class BaseJournal(abc.ABC):
         )
 
     @property
-    def rcParams(self) -> dict[str, typing.Any]:
+    def rcParams(self) -> dict[str, typing.Any]:  # noqa: N802
 
         self.add_custom_settings()
         self.add_custom_units()
@@ -72,15 +69,14 @@ class BaseJournal(abc.ABC):
         return self._rc_params | figure_size_entry
 
 
+registry: dict[str, type[BaseJournal]] = {}
+
 T = typing.TypeVar("T", bound=BaseJournal)
 
-registry : dict[str, typing.Type[T]] = {}
-
-def journal(cls: typing.Type[T]) -> typing.Type[T]:
-    registry[cls.name] = cls
+def journal(cls: type[T]) -> type[T]:
+    registry[str(cls.name)] = cls
     return cls
 
-reveal_type(registry)
 
 @journal
 class ProcRoyalSocB(BaseJournal):

@@ -1,6 +1,4 @@
 
-import typing
-
 import pympljstyle.journal
 
 
@@ -10,7 +8,7 @@ def apply_style(
     height: str = "1.5 widths",
 ) -> None:
 
-    JournalStyle = pympljstyle.journal.registry[journal_name]
+    JournalStyle = pympljstyle.journal.registry[journal_name]  # noqa: N806
 
     journal_style = JournalStyle(width=width, height=height)
 
