@@ -1,15 +1,13 @@
-import typing
-import abc
-
 import pint
 
 import pympljstyle.base
 
 
 @pympljstyle.base.journal
-class ProcRoyalSocB(pympljstyle.base.BaseJournal):
+class Cortex(pympljstyle.base.BaseJournal):
 
-    name = "proc_b"
+    name = "cortex"
+    journal_name = "Cortex"
 
     def add_custom_settings(self) -> None:
 
