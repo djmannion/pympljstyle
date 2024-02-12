@@ -1,77 +1,58 @@
-[tool.poetry]
-name = "pympljstyle"
-version = "0.1.0"
-description = "Apply journal styles and requirements to `matplotlib` figures"
-authors = ["Damien Mannion <damien@djmannion.net>"]
-license = "MIT"
-readme = "README.md"
-
-[tool.poetry.dependencies]
-python = "^3.10"
-matplotlib = "^3.8.2"
-Pint = "^0.23"
-
-[tool.poetry.group.dev.dependencies]
-pytest = "^8.0.0"
-ruff = "^0.2.1"
-
-[tool.poetry.group.interactive.dependencies]
-ipython = "^8.20.0"
-pickleshare = "^0.7.5"
-pyqt6 = "^6.6.1"
-
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-[tool.black]
-line-length = 88
-preview = false
-skip-source-first-line = false
-skip-string-normalization = false
-skip-magic-trailing-comma = false
-
-[tool.ruff]
-exclude = []
-lint.select = [
-	"E",  # error
-	"F",  # pyflakes
-	"UP",  # pyupgrade
-	"N",  # pep8-naming
-	"ANN",  # flake8-annotations
-	"A",  # flake8-builtins
-	"PTH",  # flake8-usepathlib
-	"B",  # flake8-bugbear
-	"Q",  # flake8-quotes
-	"ARG",  # flake8-unused-arguments
-	"NPY",  # numpy
-	"PERF",  # perflint
-	"RUF",  # ruff
+[project]
+name = "pympljstyle"
+dynamic = ["version"]
+description = 'Apply journal styles and requirements to `matplotlib` figures'
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+keywords = []
+authors = [
+  { name = "Damien Mannion", email = "damien@djmannion.net" },
 ]
-target-version = "py310"
-lint.ignore = [
-	"ANN101",  # typing self
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = [
+  "matplotlib",
+  "pint",
 ]
 
-[tool.mypy]
-# corresponding to --strict
-warn_unused_configs = true
-disallow_any_generics = true
-disallow_subclassing_any = true
-disallow_untyped_calls = true
-disallow_untyped_defs = true
-disallow_incomplete_defs = true
-check_untyped_defs = true
-disallow_untyped_decorators = true
-warn_redundant_casts = true
-warn_unused_ignores = true
-warn_return_any = true
-no_implicit_reexport = true
-strict_equality = true
-extra_checks = true
-
-[[tool.mypy.overrides]]
-module = [
-	"pint",
+[project.optional-dependencies]
+dev = [
+  "pytest",
+  "black",
+  "mypy",
 ]
-ignore_missing_imports = true
+interactive = [
+  "ipython",
+  "pickleshare",
+]
+
+[project.urls]
+Documentation = "https://github.com/unknown/pympljstyle#readme"
+Issues = "https://github.com/unknown/pympljstyle/issues"
+Source = "https://github.com/unknown/pympljstyle"
+
+[tool.hatch.version]
+path = "src/pympljstyle/__about__.py"
+
+[[tool.hatch.envs.all.matrix]]
+python = ["3.10", "3.11", "3.12"]
+
+[tool.hatch.envs.interactive]
+features = [
+  "dev",
+  "interactive",
+]
