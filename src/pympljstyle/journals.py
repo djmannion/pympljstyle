@@ -7,6 +7,7 @@ class Cortex(pympljstyle.base.BaseJournal):
 
     name = "cortex"
     journal_name = "Cortex"
+    custom_units = ("1 column", "1.5 columns", "2 columns")
 
     def add_custom_settings(self) -> None:
 
@@ -29,6 +30,7 @@ class JNeurophys(pympljstyle.base.BaseJournal):
 
     name = "j_neurophys"
     journal_name = "Journal of Neurophysiology"
+    custom_units = ("single", "double", "full")
 
     def add_custom_settings(self) -> None:
 

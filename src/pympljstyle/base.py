@@ -46,6 +46,18 @@ class BaseJournal(abc.ABC):
     def journal_name(self) -> str:
         return self.journal_name
 
+    @property
+    @abc.abstractmethod
+    def custom_units(self) -> tuple[str, ...]:
+        return self.custom_units
+
+    @classmethod
+    def info(cls) -> str:
+        info_str = f'"{cls.name}": {cls.journal_name}'
+        if len(cls.custom_units) > 0:
+            info_str += f' (custom units: {", ".join(cls.custom_units)})'
+        return info_str
+
     def get_size(self, units: str = "inches") -> tuple[float, float]:
 
         width = self._ureg.Quantity(value=self._width_raw)
