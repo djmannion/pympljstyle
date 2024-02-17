@@ -1,12 +1,13 @@
+import typing
 
 import pympljstyle.base
 
 
 def apply_style(
     journal_name: str,
-    width: str = "2 cols",
+    width: str,
     height: str = "1.5 widths",
-) -> None:
+) -> dict[str, typing.Any]:
 
     JournalStyle = pympljstyle.base.registry[journal_name]  # noqa: N806
 
