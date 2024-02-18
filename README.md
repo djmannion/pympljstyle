@@ -59,6 +59,8 @@ with pympljstyle.apply_style(
 If you want to access the settings directly, rather than applying them to a context manager, you can use the `get_style` function.
 This function has the same call signature of `apply_style`.
 
+Note that these functions also set a few 'opinionated' settings that are not journal specific.
+These can be disabled by setting the parameter `with_opinionated_defaults` to `False`.
 
 ### Specifying a new style
 

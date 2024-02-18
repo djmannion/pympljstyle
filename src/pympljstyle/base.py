@@ -4,6 +4,7 @@ import abc
 import pint
 
 
+
 class BaseJournal(abc.ABC):
 
     def __init__(
@@ -54,8 +55,11 @@ class BaseJournal(abc.ABC):
     @classmethod
     def info(cls) -> str:
         info_str = f'"{cls.name}": {cls.journal_name}'
-        if len(cls.custom_units) > 0:
-            info_str += f' (custom units: {", ".join(cls.custom_units)})'
+        # explicit type verification because mypy gets confused by properties
+        custom_units = cls.custom_units
+        assert isinstance(custom_units, tuple)
+        if len(custom_units) > 0:
+            info_str += f' (custom units: {", ".join(custom_units)})'
         return info_str
 
     def get_size(self, units: str = "inches") -> tuple[float, float]:
@@ -93,3 +97,20 @@ T = typing.TypeVar("T", bound=BaseJournal)
 def journal(cls: type[T]) -> type[T]:
     registry[str(cls.name)] = cls
     return cls
+
+
+def get_defaults() -> dict[str, typing.Any]:
+
+    defaults = {
+        "axes.spines.right": False,
+        "axes.spines.top": False,
+        "figure.frameon": False,
+        "font.sans-serif": [
+            "Arial",
+            "Nimbus Sans",
+            "Nimbus Sans L",
+            "Helvetica",
+        ],
+    }
+
+    return defaults

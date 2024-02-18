@@ -11,6 +11,7 @@ def apply_style(
     width: str,
     height: str = "1.5 widths",
     content_type: str = "combination",
+    with_opinionated_defaults: bool = True,
 ) -> contextlib.AbstractContextManager[None]:
 
     style = get_style(
@@ -18,6 +19,7 @@ def apply_style(
         width=width,
         height=height,
         content_type=content_type,
+        with_opinionated_defaults=with_opinionated_defaults,
     )
 
     context = mpl.rc_context(rc=style)
@@ -30,13 +32,19 @@ def get_style(
     width: str,
     height: str = "1.5 widths",
     content_type: str = "combination",
+    with_opinionated_defaults: bool = True,
 ) -> dict[str, typing.Any]:
 
     JournalStyle = pympljstyle.base.registry[journal_name]  # noqa: N806
 
     journal_style = JournalStyle(width=width, height=height, content_type=content_type)
 
-    rc_params = journal_style.rcParams
+    if with_opinionated_defaults:
+        rc_params = pympljstyle.base.get_defaults()
+    else:
+        rc_params = {}
+
+    rc_params |= journal_style.rcParams
 
     return rc_params
 
