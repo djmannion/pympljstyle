@@ -53,7 +53,7 @@ class BaseJournal(abc.ABC):
         return self.custom_units
 
     @classmethod
-    def info(cls) -> str:
+    def info(cls) -> str:  # noqa: ANN102
         info_str = f'"{cls.name}": {cls.journal_name}'
         # explicit type verification because mypy gets confused by properties
         custom_units = cls.custom_units
