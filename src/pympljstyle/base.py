@@ -102,6 +102,15 @@ def journal(cls: type[T]) -> type[T]:
 def get_defaults() -> dict[str, typing.Any]:
 
     defaults = {
+        # font sizes
+        "font.size": 9,
+        "axes.titlesize": 9,
+        "xtick.labelsize": 8,
+        "ytick.labelsize": 8,
+        "legend.fontsize": 7,
+        "legend.title_fontsize": 7,
+        # other params
+        "lines.linewidth": 1,
         "axes.spines.right": False,
         "axes.spines.top": False,
         "figure.frameon": False,
