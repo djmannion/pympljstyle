@@ -64,5 +64,93 @@ These can be disabled by setting the parameter `with_opinionated_defaults` to `F
 
 ### Specifying a new style
 
+If the desired journal style is not present in the package, you can add your own specification of the journal style to the package registry.
+For example, we can re-create the style for the journal Cortex that is present in the package.
+To do so, first create a class that inherits from `pympljstyle.base.BaseJournal` and is decorated by `@pympljstyle.base.journal`:
 
+```python
+@pympljstyle.base.journal
+class Cortex(pympljstyle.base.BaseJournal):
+    ...
+```
 
+The key attributes that are inherited from `BaseJournal` are:
+
+* `_rc_params`: the dictionary of custom matplotlib [`rcParams`](https://matplotlib.org/stable/api/matplotlib_configuration_api.html#matplotlib.rcParams) settings.
+* `_content_type`: the user-specified type of content in the figure (`halftone`, `combination`, or `line`).
+* `_ureg`: a [pint](https://pint.readthedocs.io/en/stable/index.html) [`UnitRegistry`](https://pint.readthedocs.io/en/stable/api/base.html#pint.UnitRegistry) instance.
+
+This class is required to have three class attributes:
+
+* `name`: a journal identifier, typically in snake case.
+* `journal_name`: the complete journal title.
+* `custom_units`: a tuple of strings that describes the custom size units that are available for the journal.
+
+For Cortex, this looks like:
+
+```python
+@pympljstyle.base.journal
+class Cortex(pympljstyle.base.BaseJournal):
+
+    name = "cortex"
+    journal_name = "Cortex"
+    custom_units = ("1 column", "1.5 columns", "2 columns")
+```
+
+The class is also required to have two methods:
+
+* `add_custom_settings`: where custom entries into `self._rc_params` are made.
+* `add_custom_units`: where custom units are defined.
+
+For Cortex, the custom setting that we will use is their specification for the DPI of saved figures.
+Because that is dependent on the content type, we will use the `_content_type` variable to set the appropriate DPI value in `_rc_params`:
+
+```python
+@pympljstyle.base.journal
+class Cortex(pympljstyle.base.BaseJournal):
+
+    name = "cortex"
+    journal_name = "Cortex"
+    custom_units = ("1 column", "1.5 columns", "2 columns")
+
+    def add_custom_settings(self) -> None:
+
+        dpi = {
+            "halftone": 300,
+            "combination": 500,
+            "line": 1000,
+        }
+
+        self._rc_params["savefig.dpi"] = dpi[self._content_type]
+```
+
+We can also specify some custom units - in particular, we can specify figure widths in 'columns'.
+As per their [website](https://www.elsevier.com/about/policies-and-standards/author/artwork-and-media-instructions/artwork-sizing#1-number-of-pixels) (actually publisher rather than journal-specific), 1 column is 90 mm, 1.5 columns is 140 mm, and 2 columns is 190 mm.
+To specify this relationship in `pint`, we need to convert the points into a slope and a y-intercept.
+Here, the slope is 100 and the y-intercept is -10.
+In [the way of defining custom units](https://pint.readthedocs.io/en/stable/advanced/defining.html#programmatically), the y-intercept is referred to as the `offset`.
+For Cortex, the 'columns' unit (which can also be referred to as 'column', 'col', or 'cols') is set via:
+
+```python
+@pympljstyle.base.journal
+class Cortex(pympljstyle.base.BaseJournal):
+
+    name = "cortex"
+    journal_name = "Cortex"
+    custom_units = ("1 column", "1.5 columns", "2 columns")
+
+    def add_custom_settings(self) -> None:
+
+        dpi = {
+            "halftone": 300,
+            "combination": 500,
+            "line": 1000,
+        }
+
+        self._rc_params["savefig.dpi"] = dpi[self._content_type]
+
+    def add_custom_units(self) -> None:
+        self._ureg.define(
+            "column = 100 mm; offset: -10 = col"
+        )
+```
