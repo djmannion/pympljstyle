@@ -93,7 +93,7 @@ registry: dict[str, type[BaseJournal]] = {}
 
 T = typing.TypeVar("T", bound=BaseJournal)
 
-def journal(cls: type[T]) -> type[T]:
+def add_journal(cls: type[T]) -> type[T]:
     registry[str(cls.name)] = cls
     return cls
 

@@ -66,11 +66,11 @@ These can be disabled by setting the parameter `with_opinionated_defaults` to `F
 
 If the desired journal style is not present in the package, you can add your own specification of the journal style to the package registry.
 For example, we can re-create the style for the journal Cortex that is present in the package.
-To do so, first create a class that inherits from `pympljstyle.base.BaseJournal` and is decorated by `@pympljstyle.base.journal`:
+To do so, first create a class that inherits from `pympljstyle.BaseJournal` and is decorated by `@pympljstyle.add_journal`:
 
 ```python
-@pympljstyle.base.journal
-class Cortex(pympljstyle.base.BaseJournal):
+@pympljstyle.add_journal
+class Cortex(pympljstyle.BaseJournal):
     ...
 ```
 
@@ -89,8 +89,8 @@ This class is required to have three class attributes:
 For Cortex, this looks like:
 
 ```python
-@pympljstyle.base.journal
-class Cortex(pympljstyle.base.BaseJournal):
+@pympljstyle.add_journal
+class Cortex(pympljstyle.BaseJournal):
 
     name = "cortex"
     journal_name = "Cortex"
@@ -106,8 +106,8 @@ For Cortex, the custom setting that we will use is their specification for the D
 Because that is dependent on the content type, we will use the `_content_type` variable to set the appropriate DPI value in `_rc_params`:
 
 ```python
-@pympljstyle.base.journal
-class Cortex(pympljstyle.base.BaseJournal):
+@pympljstyle.add_journal
+class Cortex(pympljstyle.BaseJournal):
 
     name = "cortex"
     journal_name = "Cortex"
@@ -132,8 +132,8 @@ In [the way of defining custom units](https://pint.readthedocs.io/en/stable/adva
 For Cortex, the 'columns' unit (which can also be referred to as 'column', 'col', or 'cols') is set via:
 
 ```python
-@pympljstyle.base.journal
-class Cortex(pympljstyle.base.BaseJournal):
+@pympljstyle.add_journal
+class Cortex(pympljstyle.BaseJournal):
 
     name = "cortex"
     journal_name = "Cortex"

@@ -34,7 +34,7 @@ class ElsevierMixin:
         )
 
 
-@pympljstyle.base.journal
+@pympljstyle.base.add_journal
 class Cortex(ElsevierMixin, pympljstyle.base.BaseJournal):
 
     name = "cortex"
@@ -42,7 +42,7 @@ class Cortex(ElsevierMixin, pympljstyle.base.BaseJournal):
     custom_units = ("1 column", "1.5 columns", "2 columns")
 
 
-@pympljstyle.base.journal
+@pympljstyle.base.add_journal
 class JNeurophys(pympljstyle.base.BaseJournal):
 
     name = "j_neurophys"
