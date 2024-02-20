@@ -32,3 +32,12 @@ jobs:
 
       - name: Test package
         run: python -m pytest
+
+      - name: Lint
+        run: ruff check .
+
+      - name: Type check
+        run: mypy .
+
+      - name: style
+        run: black --check .
