@@ -36,12 +36,10 @@ interactive = [
   "pickleshare",
 ]
 
-
-
 [project.urls]
-Documentation = "https://github.com/unknown/pympljstyle#readme"
-Issues = "https://github.com/unknown/pympljstyle/issues"
-Source = "https://github.com/unknown/pympljstyle"
+Documentation = "https://github.com/djmannion/pympljstyle#readme"
+Issues = "https://github.com/djmannion/pympljstyle/issues"
+Source = "https://github.com/djmannion/pympljstyle"
 
 [tool.setuptools.dynamic]
 version = {attr = "pympljstyle.__version__"}
