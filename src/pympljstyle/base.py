@@ -65,16 +65,11 @@ class BaseJournal(abc.ABC):
 
         width = self._ureg.Quantity(value=self._width_raw)
 
-        self._ureg.define(
-            f"width = 1 * {width.to('mm')} = w"
-        )
+        self._ureg.define(f"width = 1 * {width.to('mm')} = w")
 
         height = self._ureg.Quantity(value=self._height_raw)
 
-        return tuple(
-            dim.to(other=units).magnitude
-            for dim in (width, height)
-        )
+        return tuple(dim.to(other=units).magnitude for dim in (width, height))
 
     @property
     def rcParams(self) -> dict[str, typing.Any]:  # noqa: N802
@@ -92,6 +87,7 @@ class BaseJournal(abc.ABC):
 registry: dict[str, type[BaseJournal]] = {}
 
 T = typing.TypeVar("T", bound=BaseJournal)
+
 
 def add_journal(cls: type[T]) -> type[T]:
     registry[str(cls.name)] = cls

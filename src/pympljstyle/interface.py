@@ -52,6 +52,5 @@ def get_style(
 def get_registered_journals() -> tuple[str, ...]:
 
     return tuple(
-        JournalStyle.info()
-        for JournalStyle in pympljstyle.base.registry.values()
+        JournalStyle.info() for JournalStyle in pympljstyle.base.registry.values()
     )

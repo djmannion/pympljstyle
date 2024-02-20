@@ -29,9 +29,7 @@ class ElsevierMixin:
         self._rc_params["savefig.dpi"] = dpi[self._content_type]
 
     def add_custom_units(self: HasBaseProtocol) -> None:
-        self._ureg.define(
-            "column = 100 mm; offset: -10 = col"
-        )
+        self._ureg.define("column = 100 mm; offset: -10 = col")
 
 
 @pympljstyle.base.add_journal
