@@ -1,15 +1,24 @@
+import typing
+
+import pint
 
 import pympljstyle.base
 
 
-@pympljstyle.base.journal
-class Cortex(pympljstyle.base.BaseJournal):
+# indicate the attributes available in the Base journal
+class HasBaseProtocol(typing.Protocol):
+    @property
+    def _rc_params(self) -> dict[str, typing.Any]: ...
+    @property
+    def _content_type(self) -> str: ...
+    @property
+    def _ureg(self) -> pint.registry.UnitRegistry: ...
 
-    name = "cortex"
-    journal_name = "Cortex"
-    custom_units = ("1 column", "1.5 columns", "2 columns")
 
-    def add_custom_settings(self) -> None:
+# this can be used for general Elsevier journals
+class ElsevierMixin:
+
+    def add_custom_settings(self: HasBaseProtocol) -> None:
 
         dpi = {
             "halftone": 300,
@@ -19,10 +28,18 @@ class Cortex(pympljstyle.base.BaseJournal):
 
         self._rc_params["savefig.dpi"] = dpi[self._content_type]
 
-    def add_custom_units(self) -> None:
+    def add_custom_units(self: HasBaseProtocol) -> None:
         self._ureg.define(
             "column = 100 mm; offset: -10 = col"
         )
+
+
+@pympljstyle.base.journal
+class Cortex(ElsevierMixin, pympljstyle.base.BaseJournal):
+
+    name = "cortex"
+    journal_name = "Cortex"
+    custom_units = ("1 column", "1.5 columns", "2 columns")
 
 
 @pympljstyle.base.journal

@@ -34,7 +34,7 @@ This shows the journal identifier followed by its complete title and any registe
 To use a built-in style, first identify the relevant journal identifier as shown above.
 Then, the width of the figure needs to be specified.
 This can be in typical units like centimetres or inches, but many journal style definitions also support more journal-specific units like 'columns' or identifiers such as 'single' (the custom units that are supported by a particular journal style are shown in the output of `get_registered_journals`, as shown in the previous section).
-The height of the figure can be (optionally) specified using the same set of units, with the additional option of using a 'width' (or 'w') unit to allow for the height to be a multiple of the width (e.g., '0.5 widths').
+The height of the figure can be specified using the same set of units, with the additional option of using a 'width' (or 'w') unit to allow for the height to be a multiple of the width (e.g., '0.5 widths').
 Finally, the sort of content that will be shown in the figure can (optionally) be specified.
 This is typically used by journal styles to identify the appropriate DPI to use when exporting the figure.
 The available options are `halftone`, `combination` (the default), and `line`.

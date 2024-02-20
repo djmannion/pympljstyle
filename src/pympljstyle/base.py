@@ -4,7 +4,6 @@ import abc
 import pint
 
 
-
 class BaseJournal(abc.ABC):
 
     def __init__(
