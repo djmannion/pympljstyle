@@ -19,3 +19,16 @@ def test_add_custom() -> None:
             pass
 
     assert "custom_test" in pympljstyle.registry
+
+
+def test_all_styles() -> None:
+
+    for journal_name in pympljstyle.registry:
+
+        if journal_name == "custom_test":
+            continue
+
+        _ = pympljstyle.get_style(
+            journal_name=journal_name,
+            width="1cm",
+        )

@@ -154,3 +154,5 @@ class Cortex(pympljstyle.BaseJournal):
             "column = 100 mm; offset: -10 = col"
         )
 ```
+
+Once complete, consider contributing your new journal styles to the package via a pull request.
