@@ -35,6 +35,10 @@ interactive = [
   "ipython",
   "pickleshare",
 ]
+build = [
+  "build",
+  "twine",
+]
 
 [project.urls]
 Documentation = "https://github.com/djmannion/pympljstyle#readme"

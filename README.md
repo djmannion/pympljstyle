@@ -156,3 +156,29 @@ class Cortex(pympljstyle.BaseJournal):
 ```
 
 Once complete, consider contributing your new journal styles to the package via a pull request.
+
+
+## Development
+
+### Build and release process
+
+First, build the package (after having previously run `pip install -e .[build]`):
+
+```bash
+python -m build
+```
+
+This will produce files in the `dist/` sub-directory.
+
+Then, test the ability to upload to the test PyPI server:
+
+```bash
+python -m twine upload --repository testpypi dist/*
+```
+
+If that all looks OK, then upload to PyPI:
+
+```bash
+python -m twine twine upload dist/*
+```
+
