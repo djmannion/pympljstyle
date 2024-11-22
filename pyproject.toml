@@ -1,20 +1,12 @@
-[build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
-
 [project]
 name = "pympljstyle"
-dynamic = ["version"]
-description = 'Apply journal styles and requirements to `matplotlib` figures'
+version = "0.3.0"
+description = "Apply journal styles and requirements to `matplotlib` figures"
 readme = "README.md"
 requires-python = ">=3.10"
 keywords = []
 authors = [
   { name = "Damien Mannion", email = "damien@djmannion.net" },
-]
-dependencies = [
-  "matplotlib",
-  "pint",
 ]
 classifiers = [
   "Development Status :: 3 - Alpha",
@@ -23,21 +15,30 @@ classifiers = [
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
 ]
+dependencies = [
+    "matplotlib>=3.9.2",
+    "pint>=0.24.4",
+]
 
 [project.optional-dependencies]
-dev = [
-  "pytest",
-  "black",
-  "mypy",
-  "ruff",
-]
 interactive = [
-  "ipython",
-  "pickleshare",
+    "ipython>=8.29.0",
+    "pickleshare>=0.7.5",
 ]
-build = [
-  "build",
-  "twine",
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+dev-dependencies = [
+  "black>=24.8.0",
+  "mypy>=1.11.2",
+  "pytest>=8.3.3",
+  "pytest-cov>=5.0.0",
+  "repo-review>=0.11.2",
+  "ruff>=0.6.7",
+  "sp-repo-review[cli]>=2024.8.19",
 ]
 
 [project.urls]
@@ -45,8 +46,14 @@ Documentation = "https://github.com/djmannion/pympljstyle#readme"
 Issues = "https://github.com/djmannion/pympljstyle/issues"
 Source = "https://github.com/djmannion/pympljstyle"
 
-[tool.setuptools.dynamic]
-version = {attr = "pympljstyle.__version__"}
+# until uv gets a task runner
+[tool.poe.tasks]
+test = "uv run pytest --cov --cov-report term-missing"
+typecheck = "uv run mypy ."
+lint = "uv run ruff check"
+style = "uv run black ."
+repo-review = "uv run repo-review"
+ipython = "uv run --extra interactive ipython"
 
 [tool.black]
 line-length = 88
@@ -56,29 +63,30 @@ skip-string-normalization = false
 skip-magic-trailing-comma = false
 
 [tool.ruff]
-exclude = []
+exclude = ["docs", "tests"]
 lint.select = [
-	"E",  # error
-	"F",  # pyflakes
-	"UP",  # pyupgrade
-	"N",  # pep8-naming
-	"ANN",  # flake8-annotations
-	"A",  # flake8-builtins
-	"PTH",  # flake8-usepathlib
-	"B",  # flake8-bugbear
-	"Q",  # flake8-quotes
-	"ARG",  # flake8-unused-arguments
-	"NPY",  # numpy
-	"PERF",  # perflint
-	"RUF",  # ruff
+  "E",  # error
+  "F",  # pyflakes
+  "UP",  # pyupgrade
+  "N",  # pep8-naming
+  "ANN",  # flake8-annotations
+  "A",  # flake8-builtins
+  "PTH",  # flake8-usepathlib
+  "B",  # flake8-bugbear
+  "Q",  # flake8-quotes
+  "ARG",  # flake8-unused-arguments
+  "NPY",  # numpy
+  "PERF",  # perflint
+  "RUF",  # ruff
 ]
-target-version = "py310"
 lint.ignore = [
-	"ANN101",  # typing self
+  "ANN101",  # typing self
+  "PERF203",  # performance overhead from try/catch in loops
 ]
 
 [tool.mypy]
 # corresponding to --strict
+strict = true
 warn_unused_configs = true
 disallow_any_generics = true
 disallow_subclassing_any = true
@@ -88,14 +96,58 @@ disallow_incomplete_defs = true
 check_untyped_defs = true
 disallow_untyped_decorators = true
 warn_redundant_casts = true
-warn_unused_ignores = true
+warn_unused_ignores = false
 warn_return_any = true
 no_implicit_reexport = true
 strict_equality = true
 extra_checks = true
+warn_unreachable = true
+untyped_calls_exclude = []
+enable_error_code = [
+  "ignore-without-code",
+  "redundant-expr",
+  "truthy-bool",
+]
+plugins = [
+]
+exclude = ["docs", "tests"]
 
 [[tool.mypy.overrides]]
 module = [
-	"pint",
+  "pint",
 ]
 ignore_missing_imports = true
+
+
+[tool.repo-review]
+ignore = [
+  "RTD",  # not using readthedocs
+  "RF102",  # not a fan of isort
+  "PC", "PY006",  # not using pre-commit
+  "PY007",  # poe not recognised as a task runner
+]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = ["-ra", "--showlocals", "--strict-markers", "--strict-config"]
+xfail_strict = true
+filterwarnings = ["error"]
+log_cli_level = "info"
+testpaths = ["tests"]
+
+[tool.coverage.run]
+omit = ["tests/*"]
+
+[tool.coverage.report]
+exclude_also = [
+  "def __repr__",
+  "if self.debug:",
+  "if settings.DEBUG",
+  "raise AssertionError",
+  "raise NotImplementedError",
+  "if 0:",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+  "class .*\\bProtocol\\):",
+  "@(abc\\.)?abstractmethod",
+]
