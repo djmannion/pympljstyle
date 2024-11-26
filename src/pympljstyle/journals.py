@@ -68,7 +68,7 @@ class Slide(pympljstyle.base.BaseJournal):
 
     name = "slide"
     journal_name = "Presentation slide"
-    custom_units = ("half", "full")
+    custom_units = ()
 
     def add_custom_settings(self) -> None:
 
@@ -81,9 +81,11 @@ class Slide(pympljstyle.base.BaseJournal):
             self._rc_params[f"{ax}tick.labelsize"] = base_font_size - (2 * 2)
         self._rc_params["legend.fontsize"] = base_font_size - (2 * 2)
         self._rc_params["legend.title_fontsize"] = base_font_size - (2 * 2)
+        self._rc_params["legend.title_fontsize"] = base_font_size - (2 * 2)
+
+        self._rc_params["lines.linewidth"] = 2
 
         self._rc_params["savefig.dpi"] = 96
 
     def add_custom_units(self) -> None:
-        self._ureg.define("half = 14.39 cm")
-        self._ureg.define("full = 29.21 cm")
+        self._ureg.define("column = 14.39 cm; offset: -0.43 = col")
