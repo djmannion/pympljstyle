@@ -61,3 +61,29 @@ class JNeurophys(pympljstyle.base.BaseJournal):
         self._ureg.define("single = 8.9 cm")
         self._ureg.define("double = 12 cm")
         self._ureg.define("full = 18 cm")
+
+
+@pympljstyle.base.add_journal
+class Slide(pympljstyle.base.BaseJournal):
+
+    name = "slide"
+    journal_name = "Presentation slide"
+    custom_units = ("half", "full")
+
+    def add_custom_settings(self) -> None:
+
+        base_font_size = 18
+
+        self._rc_params["font.size"] = base_font_size
+        self._rc_params["axes.labelsize"] = base_font_size
+        self._rc_params["axes.titlesize"] = base_font_size
+        for ax in ("x", "y"):
+            self._rc_params[f"{ax}tick.labelsize"] = base_font_size - (2 * 2)
+        self._rc_params["legend.fontsize"] = base_font_size - (2 * 2)
+        self._rc_params["legend.title_fontsize"] = base_font_size - (2 * 2)
+
+        self._rc_params["savefig.dpi"] = 96
+
+    def add_custom_units(self) -> None:
+        self._ureg.define("half = 14.39 cm")
+        self._ureg.define("full = 29.21 cm")
